@@ -3,6 +3,7 @@
 namespace App\Providers\Filament;
 
 use Filament\Http\Middleware\Authenticate;
+use BezhanSalleh\FilamentShield\FilamentShieldPlugin;
 use Filament\Http\Middleware\AuthenticateSession;
 use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
@@ -26,6 +27,8 @@ class AppPanelProvider extends PanelProvider
             ->default()
             ->id('app')
             ->path('app')
+            ->spa()
+            // ->unsavedChangesAlerts()
             ->login()
             ->colors([
                 'primary' => Color::Amber,
@@ -53,6 +56,11 @@ class AppPanelProvider extends PanelProvider
             ])
             ->authMiddleware([
                 Authenticate::class,
+            ])
+            ->plugins([
+                FilamentShieldPlugin::make(),
+                \TomatoPHP\FilamentPWA\FilamentPWAPlugin::make(),
+                \Kirschbaum\Commentions\CommentionsPlugin::make(),
             ]);
     }
 }
