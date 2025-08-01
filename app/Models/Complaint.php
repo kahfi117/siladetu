@@ -22,13 +22,15 @@ class Complaint extends Model implements Commentable
         'code', 'subject', 'complainant',
         'anonim', 'description', 'location',
         'complaint_type_id', 'complaint_status',
-        'complaint_prorities', 'assigned_to'
+        'complaint_prorities', 'assigned_to',
+        'proof_of_complaint'
     ];
 
     protected $casts = [
         'anonim' => 'boolean',
         'complaint_status' => StatusEnum::class,
-        'complaint_prorities' => PriorityEnum::class
+        'complaint_prorities' => PriorityEnum::class,
+        'proof_of_complaint' => 'array'
     ];
 
     /**
@@ -79,5 +81,14 @@ class Complaint extends Model implements Commentable
     public function assignedTo(): BelongsTo
     {
         return $this->belongsTo(User::class, 'assigned_to');
+    }
+
+    public static function generateUniqueCode($prefix = 'INFRA-', $length = 6)
+    {
+        do {
+            $code = $prefix . strtoupper(Str::random($length));
+        } while (self::where('code', $code)->exists());
+
+        return $code;
     }
 }

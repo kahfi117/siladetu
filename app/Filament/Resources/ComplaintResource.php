@@ -76,23 +76,30 @@ class ComplaintResource extends Resource
                                     ->columnSpanFull(),
 
                                 Forms\Components\Section::make('Foto Pendukung')
-                                    ->relationship('complaintFiles')
                                     ->schema([
-                                        JsonMediaGallery::make('path')
-                                            ->directory('Aduan')
-                                            ->hiddenLabel()
-                                            ->downloadable()
-                                            ->reorderable()
-                                            ->preserveFilenames()
-                                            ->visibility('public') // only public for now - NO S3
-                                            ->maxSize(4 * 1024)
-                                            ->replaceNameByTitle() // If you want to show title (alt customProperties) against file name
-                                            ->image() // only images by default , u need to choose one (images or document)
-                                            ->downloadable()
-                                            ->deletable()
-                                            // ->multiple()
-                                            ->image()
+                                        Forms\Components\FileUpload::make('proof_of_complaint')
+                                            ->directory('Bukti')
+                                            ->multiple()
                                     ])
+
+                                // Forms\Components\Section::make('Foto Pendukung')
+                                //     ->relationship('complaintFiles')
+                                //     ->schema([
+                                //         JsonMediaGallery::make('path')
+                                //             ->directory('Aduan')
+                                //             ->hiddenLabel()
+                                //             ->downloadable()
+                                //             ->reorderable()
+                                //             ->preserveFilenames()
+                                //             ->visibility('public') // only public for now - NO S3
+                                //             ->maxSize(4 * 1024)
+                                //             ->replaceNameByTitle() // If you want to show title (alt customProperties) against file name
+                                //             ->image() // only images by default , u need to choose one (images or document)
+                                //             ->downloadable()
+                                //             ->deletable()
+                                //             // ->multiple()
+                                //             ->image()
+                                //     ])
 
                             ])
                             ->columns(2)
@@ -150,7 +157,7 @@ class ComplaintResource extends Resource
                     ->searchable(),
                 Tables\Columns\TextColumn::make('complaint_prorities')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('assigned_to')
+                Tables\Columns\TextColumn::make('assignedTo.name')
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
