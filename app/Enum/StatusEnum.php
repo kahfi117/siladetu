@@ -12,6 +12,7 @@ enum StatusEnum :string implements HasLabel, HasIcon, HasColor
     case REJECTED = "rejected";
     case ASSIGNED = "assigned";
     case PROCESS = "process";
+    case CONSTRAINT = "constraint";
     case DONE = "done";
 
     public function getLabel(): string|null
@@ -21,6 +22,7 @@ enum StatusEnum :string implements HasLabel, HasIcon, HasColor
             self::REJECTED => "Ditolak",
             self::ASSIGNED => "Ditugaskan",
             self::PROCESS => "Diproses",
+            self::CONSTRAINT => "Terkendala",
             self::DONE => "Selesai",
         };
     }
@@ -32,6 +34,7 @@ enum StatusEnum :string implements HasLabel, HasIcon, HasColor
             self::REJECTED => "heroicon-m-x-circle",
             self::ASSIGNED => "heroicon-m-user-plus",
             self::PROCESS  => "heroicon-m-arrow-path",
+            self::CONSTRAINT  => "heroicon-m-x-circle",
             self::DONE      => "heroicon-m-check-circle",
         };
     }
@@ -41,6 +44,7 @@ enum StatusEnum :string implements HasLabel, HasIcon, HasColor
         return match ($this) {
             self::NEW => "gray",
             self::REJECTED => "danger",
+            self::CONSTRAINT => "danger",
             self::ASSIGNED => "info",
             self::PROCESS => "warning",
             self::DONE => "success",
