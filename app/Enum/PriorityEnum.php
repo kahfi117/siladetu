@@ -15,9 +15,9 @@ enum PriorityEnum :string implements HasLabel, HasColor, HasIcon
     public function getLabel(): string|null
     {
         return match ($this) {
-            self::LOW => "Ringan",
+            self::LOW => "Rendah",
             self::MEDIUM => "Sedang",
-            self::HIGH => "Tinggi"
+            self::HIGH => "Tnggi"
         };
     }
 

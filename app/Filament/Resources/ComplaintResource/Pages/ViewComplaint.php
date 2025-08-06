@@ -5,7 +5,9 @@ namespace App\Filament\Resources\ComplaintResource\Pages;
 use App\Filament\Resources\ComplaintResource;
 use Filament\Actions;
 use Filament\Infolists;
+use Filament\Infolists\Components\ImageEntry;
 use Filament\Infolists\Infolist;
+use GalleryJsonMedia\Infolists\JsonMediaEntry;
 use Illuminate\Support\HtmlString;
 use Kirschbaum\Commentions\Filament\Infolists\Components\CommentsEntry;
 use Filament\Resources\Pages\ViewRecord;
@@ -63,6 +65,22 @@ class ViewComplaint extends ViewRecord
                                 CommentsEntry::make('comments')
                                     ->mentionables(fn (Model $record) => User::all()),
                             ])->columnSpan(1),
+
+                        Infolists\Components\Section::make('Galeri Bukti')
+                            // ->relationship('complaintFiles')
+                            ->schema([
+                                \Rupadana\FilamentSwiper\Infolists\Components\SwiperImageEntry::make('proof_of_complaint')
+                                    ->navigation(true)
+                                    ->pagination()
+                                    ->paginationClickable()
+                                    ->paginationDynamicBullets()
+                                    ->paginationHideOnClick()
+                                    ->paginationDynamicMainBullets(2)
+                                    ->height(600)
+                                    ->autoplay()
+                                    ->centeredSlides()
+                                    ->slidesPerView(2)
+                            ])->columnSpanFull()
 
                     ])
                     ->columns(3)
