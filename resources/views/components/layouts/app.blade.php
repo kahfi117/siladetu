@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="h-full">
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -21,11 +21,11 @@
         @livewireStyles
         @filamentStyles
     </head>
-    <body class="bg-white dark:bg-gray-900">
+    <body class="bg-white dark:bg-gray-900 flex flex-col min-h-screen">
 
         @include('components.layouts.navbar')
 
-        <main class="max-w-screen-xl items-center justify-between mx-auto p-4">
+        <main class="max-w-screen-xl items-center flex-grow justify-between mx-auto p-4">
             {{ $slot }}
         </main>
 

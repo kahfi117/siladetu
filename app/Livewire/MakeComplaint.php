@@ -20,6 +20,16 @@ use Livewire\Component;
 class MakeComplaint extends Component implements HasForms
 {
     use InteractsWithForms;
+
+    public bool $success = false;
+    public string $successMessage = '';
+    public string $codeComplaint = '';
+    public ?array $data = [];
+
+    public function mount(): void
+    {
+        $this->form->fill();
+    }
     public function render()
     {
         return view('livewire.make-complaint');
@@ -30,6 +40,7 @@ class MakeComplaint extends Component implements HasForms
         return $form
             ->model(Complaint::class)
             ->columns(4)
+            ->statePath('data')
             ->schema([
                 TextInput::make('subject')
                     ->required()
@@ -62,20 +73,36 @@ class MakeComplaint extends Component implements HasForms
                     ->options(PriorityEnum::class)
                     ->default(PriorityEnum::LOW),
 
-
                 Textarea::make('description')
-                    ->columnSpanFull()
+                    ->columnSpan(2)
                     ->label('Rincian Aduan'),
 
                 Textarea::make('location')
-                    ->columnSpanFull()
+                    ->columnSpan(2)
                     ->label('Lokasi Kejadian'),
+
+                FileUpload::make('proof_of_complaint')
+                    ->directory('Bukti')
+                    ->label('Bukti')
+                    ->columnSpanFull()
+                    ->multiple()
 
             ]);
     }
 
     public function create(): void
     {
-        dd($this->form->getState());
+        $data = $this->form->getState();
+        $data['complaint_status'] = 'new';
+        $data['code'] = Complaint::generateUniqueCode();
+
+        $complaint = Complaint::create($data);
+
+        $this->success = true;
+        $this->successMessage = $complaint->subject;
+        $this->codeComplaint = $complaint->code;
+
+        $this->form->fill();
+
     }
 }

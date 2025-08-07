@@ -50,4 +50,16 @@ enum StatusEnum :string implements HasLabel, HasIcon, HasColor
             self::DONE => "success",
         };
     }
+
+    public function getDescription(): string|null
+    {
+        return match ($this) {
+            self::NEW => "Baru nongol, sabar yaa bakal diproses kok 😎",
+            self::REJECTED => "Aduanmu ditolak, mungkin kurang lengkap atau gak sesuai 😬",
+            self::ASSIGNED => "Udah dapet 'tukang' buat nanganin, chill dulu 🛠️",
+            self::PROCESS => "Lagi digarap nih, semangat kakak! 🔧🔥",
+            self::CONSTRAINT => "Lagi kehalang sesuatu, doain biar lancar lagi 😵‍💫",
+            self::DONE => "Selesai cuy! Makasih udah lapor 💯✨",
+        };
+    }
 }
