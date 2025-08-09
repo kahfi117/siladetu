@@ -10,6 +10,7 @@ class CekComplaint extends Component
     public $code;
     public $status;
     public $keterangan;
+    public $tanggal;
     public $found = false;
     public $error = false;
     public $data;

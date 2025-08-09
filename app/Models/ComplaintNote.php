@@ -9,7 +9,7 @@ class ComplaintNote extends Model
 {
     protected $fillable = [
         'complaint_id', 'created_by',
-        'note'
+        'note', 'file'
     ];
 
     /**

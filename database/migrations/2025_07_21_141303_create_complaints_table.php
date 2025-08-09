@@ -36,15 +36,9 @@ return new class extends Migration
             $table->foreignId('assigned_to')->nullable()->index()->constrained(
                 table: 'users', indexName: 'complaints_assigned_to'
             );
+            $table->text('proof_of_complaint')->nullable();
             $table->timestamps();
             $table->softDeletes();
-        });
-
-        Schema::create('complaint_files', function(Blueprint $table) {
-            $table->foreignId('complaint_id')->index();
-            $table->string('path', 300);
-            $table->string('type')->nullable();
-            $table->timestamps();
         });
 
         Schema::create('complaint_notes', function(Blueprint $table){
@@ -54,25 +48,11 @@ return new class extends Migration
                 table: 'users', indexName: 'complaint_notes_created_by'
             );
             $table->text('note');
+            $table->text('file')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });
 
-        Schema::create('complaint_note_files', function(Blueprint $table){
-            $table->foreignId('complaint_note_id')->index();
-            $table->string('path',300);
-            $table->string('type')->nullable();
-            $table->timestamps();
-        });
-
-        Schema::create('complaint_rejections', function(Blueprint $table) {
-            $table->foreignId('complaint_id')->index();
-            $table->text('note');
-            $table->foreignId('rejection_by')->nullable()->index()->constrained(
-                table: 'users', indexName: 'complaint_rejections_rejection_by'
-            );
-            $table->timestamps();
-        });
     }
 
     /**

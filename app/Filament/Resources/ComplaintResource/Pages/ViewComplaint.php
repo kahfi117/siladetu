@@ -3,7 +3,12 @@
 namespace App\Filament\Resources\ComplaintResource\Pages;
 
 use App\Filament\Resources\ComplaintResource;
+use App\Models\Complaint;
+use App\Models\ComplaintNote;
 use Filament\Actions;
+use Filament\Forms\Components\FileUpload;
+use Filament\Forms\Components\Textarea;
+use Filament\Forms\Components\TextInput;
 use Filament\Infolists;
 use Filament\Infolists\Components\ImageEntry;
 use Filament\Infolists\Infolist;
@@ -26,6 +31,7 @@ class ViewComplaint extends ViewRecord
                 Infolists\Components\Grid::make()
                     ->schema([
                         Infolists\Components\Section::make('Informasi Pengaduan')
+                            ->collapsible()
                             ->schema([
                                 Infolists\Components\TextEntry::make('anonim')
                                     ->badge()
@@ -59,15 +65,62 @@ class ViewComplaint extends ViewRecord
                                     ->label('Deskripsi Aduan')
                             ])
                             ->columnSpan(2),
-                        Infolists\Components\Section::make('Komenentar')
+                        Infolists\Components\Section::make('Komentar')
                             ->schema([
-
                                 CommentsEntry::make('comments')
                                     ->mentionables(fn (Model $record) => User::all()),
                             ])->columnSpan(1),
 
-                        Infolists\Components\Section::make('Galeri Bukti')
-                            // ->relationship('complaintFiles')
+                        Infolists\Components\Section::make('Catatan Petugas')
+                            ->headerActions([
+
+                                Infolists\Components\Actions\Action::make('noted_petugas')
+                                    ->label('Buat Catatan')
+                                    ->form([
+                                        Textarea::make('note')
+                                            ->required()
+                                            ->label('Catatan'),
+                                        FileUpload::make('file')
+                                            ->label('File Catatan'),
+                                    ])
+                                    ->action(function (array $data, Complaint $record) {
+                                        $data['created_by'] = auth()->id();
+                                        $data['complaint_id'] = $record->id;
+                                        $note = new ComplaintNote;
+
+                                        $note->create($data);
+                                    }),
+
+                            ])
+                            ->schema([
+
+                                Infolists\Components\RepeatableEntry::make('complaintNotes')
+                                    ->label('Catatan Petugas')
+                                    ->hiddenLabel()
+                                    ->schema([
+                                        Infolists\Components\TextEntry::make('created_at')
+                                            ->since()
+                                            ->dateTimeTooltip()
+                                            ->badge()
+                                            ->label('Dibuat')
+                                            ->inlineLabel(),
+
+                                        Infolists\Components\TextEntry::make('note')
+                                            ->label('Catatan Petugas')
+                                            ->words(10)
+                                            ->inlineLabel(),
+
+                                        Infolists\Components\ImageEntry::make('file')
+                                            ->label('File Catatan')
+                                            ->inlineLabel(),
+
+                                    ])
+                                    ->contained(true)
+                            ])
+                            ->columnSpanFull(),
+
+                        Infolists\Components\Section::make('Bukti Aduan')
+                            ->collapsed()
                             ->schema([
                                 \Rupadana\FilamentSwiper\Infolists\Components\SwiperImageEntry::make('proof_of_complaint')
                                     ->navigation(true)

@@ -7,6 +7,7 @@ use App\Enum\StatusEnum;
 use App\Filament\Resources\ComplaintResource\Pages;
 use App\Filament\Resources\ComplaintResource\RelationManagers;
 use App\Models\Complaint;
+use Auth;
 use Filament\Forms;
 use Filament\Forms\Components\Actions\Action;
 use Filament\Forms\Form;
@@ -143,23 +144,30 @@ class ComplaintResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('code')
+                    ->label('Kode Aduan')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('subject')
+                    ->label('Subjek Aduan')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('complainant')
+                    ->label('Pelapor')
                     ->searchable(),
                 Tables\Columns\IconColumn::make('anonim')
-                    ->boolean(),
+                    ->boolean()
+                    ->label('Anonim'),
                 Tables\Columns\TextColumn::make('complaintType.name')
                     ->numeric()
+                    ->label('Tipe Aduan')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('complaint_status')
-                    ->searchable(),
+                    ->searchable()
+                    ->label('Status Aduan'),
                 Tables\Columns\TextColumn::make('complaint_prorities')
-                    ->searchable(),
+                    ->searchable()
+                    ->label('Prioritas Aduan'),
                 Tables\Columns\TextColumn::make('assignedTo.name')
-                    ->numeric()
-                    ->sortable(),
+                    ->label('Ditugaskan Kepada')
+                    ->default('Belum Ditugaskan'),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
@@ -180,6 +188,16 @@ class ComplaintResource extends Resource
                 Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
             ])
+            ->modifyQueryUsing(function (Builder $query) {
+                $user = auth()->user();
+
+                if ($user->hasRole('admin')) {
+                    return $query;
+                }
+                else {
+                    return $query->where('assigned_to', $user->id);
+                }
+            })
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
@@ -218,7 +236,6 @@ class ComplaintResource extends Resource
         return [
             Forms\Components\TextInput::make('name')
                 ->label('Nama'),
-
         ];
     }
 
