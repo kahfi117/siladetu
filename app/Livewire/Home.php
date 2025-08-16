@@ -2,6 +2,7 @@
 
 namespace App\Livewire;
 
+use App\Models\Complaint;
 use Livewire\Component;
 
 class Home extends Component
@@ -11,6 +12,14 @@ class Home extends Component
     public function render()
     {
         return view('livewire.home');
+    }
+
+    public function getCountComplaint(string $status=null):int
+    {
+        if (!empty($status))
+            return Complaint::count();
+        else
+            return Complaint::where('complaint_status',$status)->count();
     }
 
     public array $faqs = [

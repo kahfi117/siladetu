@@ -38,7 +38,7 @@
             <div class="grid gap-8 md:grid-cols-3">
             <!-- Card 1: Total Pengaduan -->
             <div class="p-6 bg-gray-50 rounded-lg shadow dark:bg-gray-800">
-                <h3 class="text-4xl font-extrabold text-gray-900 dark:text-white">2000</h3>
+                <h3 class="text-4xl font-extrabold text-gray-900 dark:text-white">{{$this->getCountComplaint()}}</h3>
                 <p class="mt-2 text-lg font-semibold text-gray-700 dark:text-gray-300">Total Drama</p>
                 <p class="text-sm text-gray-500 dark:text-gray-400">Jumlah pengaduan yang masuk, rame bener! 😮‍💨</p>
             </div>
